@@ -1,0 +1,31 @@
+#
+## This is for server options only
+##
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+binlog_format=ROW
+bind-address=<%= @ipaddress %>
+default-storage-engine=innodb
+innodb_autoinc_lock_mode=2
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
+wsrep_provider_options="gcache.size=300M; gcache.page_size=1G"
+wsrep_cluster_name="test_cluster"
+wsrep_cluster_address="gcomm://<% cluster.each do |ipaddr| %><%= ipaddr %>,<% end %>"
+wsrep_sst_method=rsync
+
+[mysql_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid 
+
+##
+## This group is read both both by the client and the server
+## use it for options that affect everything
+##
+[client-server]
+#
+##
+## include all files from the config directory
+##
+!includedir /etc/mysql/conf.d/

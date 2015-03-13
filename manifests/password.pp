@@ -1,3 +1,4 @@
+
 #
 # Class: mariadb::password
 #
